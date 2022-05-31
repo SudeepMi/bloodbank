@@ -1,4 +1,4 @@
-const host = process.env.NODE_ENV === "production" ? "https://appyana.herokuapp.com" : "http://127.0.0.1:3035";
+const host = process.env.NODE_ENV === "production" ? "https://blood-bank-np.herokuapp.com/" : "http://127.0.0.1:3035";
 
 const userToken = localStorage.getItem("token") || null;
 
