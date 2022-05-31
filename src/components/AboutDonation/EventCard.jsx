@@ -36,7 +36,7 @@ function EventCard({ event }) {
 
   return (
     <div className="col-lg-3 col-md-6 col-sm-12" key={event._id} style={{minHeight:"360px"}}>
-      <div className="about-donation__event__header">
+      <div className="about-donation__event__header d-grid">
         <h3>
           <Link to={`/events-focus/${event._id}`}>{event.name}</Link>
         </h3>

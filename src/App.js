@@ -26,6 +26,8 @@ import Location from "./Pages/Location/Location";
 import usePushNotifications from "./usePushNotifications";
 import Notifications from "./Pages/Notification/Notification";
 import Footer from "./components/Footer";
+import Api from "./utils/Api";
+import Donate from "./Pages/Donate/Donate";
 
 const ProtectedRoute = ({ redirectPath = "/login" }) => {
   if (!User()) {
@@ -61,6 +63,13 @@ function App() {
     }
   }, [isConsentGranted]);
   const [pr, setPr] = React.useState("");
+
+  //make user online
+  useEffect(() => {
+    if(User().token){
+      Api.put(`/users/${User().user._id}`,{status:"online"})
+    }
+  }, []);
   return (
     <Router>
       <Navbar />
@@ -81,6 +90,7 @@ function App() {
           <Route path="/chat/:id" element={<Chat />} />
           <Route path="/location/:id" element={<Location />} />
           <Route path="notifications" element={<Notifications />} />
+          <Route path="/donate" element={<Donate />} />
         </Route>
       </Routes>
       <Footer />

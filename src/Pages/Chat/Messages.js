@@ -10,7 +10,7 @@ const Messages = ({ messages, name }) => {
     messages.map((message, i) => 
     <div key={i} className="test">
       <Message message={message} name={name}/>
-    </div>) : "No messages yet"
+    </div>) : <p className='p-2'>No messages yet</p>
     }
   </ScrollToBottom>)
 };

@@ -71,7 +71,7 @@ useEffect(()=> {
 
   return (
     <div className="container outerContainer">
-      <div className="w-100 m-0 mt-5 p-0">
+      <div className="w-100 m-0 mt-5 p-0 border border-danger">
           <InfoBar room={room} typing={typing} user={name} recip={users} />
           <Messages messages={messages} name={name} />
           <Input message={message} setMessage={setMessage} sendMessage={sendMessage} sendTyping={sendTyping}/>

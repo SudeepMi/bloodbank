@@ -30,12 +30,12 @@ function DonorProfile({ profile }) {
       <div className="col-md-4 col-sm-10 mt-2">
         <div className="profile_set__card card">
           <div className="profile_set__card_img p-5">
-            <img src={profile.photo} width={"100%"} alt="" />
+            <img src={profile.photo} width={"100%"} alt="" style={{borderRadius:"10px"}} />
             <h4 className="mt-2">{profile.fullname}</h4>
             <p>Address: {profile.address}</p>
             <p>Blood Group: {profile.blood_group}</p>
-            <p>
-              Far Away: {calculateDistance(userLocation, profile.location)} KM
+            <p className="distance__">
+              {calculateDistance(userLocation, profile.location)} KM
               away
             </p>
 
