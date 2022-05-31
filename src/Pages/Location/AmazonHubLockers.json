@@ -1,0 +1,19 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+    {
+    "type": "Feature",
+    "geometry": {
+    "type": "Point",
+    "coordinates": [
+    -123.13271027785173,
+    49.29010391706197
+    ]
+    },
+    "properties": {
+    "title": "Amazon Hub Locker - Robson",
+    "address": "1675 Robson St, Vancouver, BC V6G 1C8, Canada"
+    }
+    }
+    ]
+    }

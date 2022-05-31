@@ -1,0 +1,21 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-bloodbank-dev-224129-authRole",
+      "UnauthRoleArn": "arn:aws:iam::223109002853:role/amplify-bloodbank-dev-224129-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::223109002853:role/amplify-bloodbank-dev-224129-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-bloodbank-dev-224129-deployment",
+      "UnauthRoleName": "amplify-bloodbank-dev-224129-unauthRole",
+      "StackName": "amplify-bloodbank-dev-224129",
+      "StackId": "arn:aws:cloudformation:us-east-1:223109002853:stack/amplify-bloodbank-dev-224129/4d35d020-dab9-11ec-8db5-0a7829d37e6d",
+      "AmplifyAppId": "d1tlfrzrfyb23k"
+    },
+    "categories": {
+      "auth": {
+        "bloodbank2888fbfa": {},
+        "true": {}
+      }
+    }
+  }
+}

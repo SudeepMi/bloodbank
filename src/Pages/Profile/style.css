@@ -1,0 +1,16 @@
+.profile_set__header{
+    padding: 40px;
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+}
+.profile_submit_btn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-top: 50px;
+}
+.profile_submit_btn button{
+    width: 30%;
+}
