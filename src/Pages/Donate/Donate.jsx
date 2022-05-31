@@ -8,12 +8,14 @@ import FormControl from "@mui/material/FormControl";
 import "./style.css";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
-import { Button } from "@mui/material";
+import { Avatar, Button } from "@mui/material";
 import Api from "../../utils/Api";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import DonorProfile from "../../components/DonorProfile/DonorProfile";
 import EventCard from "../../components/AboutDonation/EventCard";
+import axios from "axios";
+import calculateDistance from "../../utils/Distance";
 
 function Donate() {
   const user = User().user;
@@ -56,6 +58,16 @@ function Donate() {
       .catch((err) => {
         console.log(err);
       });
+
+      Api.get("/requests?limit=6")
+      .then((res) => {
+        if (res.status === 200) {
+          setRequests(res.data.event);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
 
   const history = useNavigate();
@@ -82,10 +94,61 @@ function Donate() {
         <div className="col-md-12 mt-3">
           <h5 className="">Recent Blood Requests</h5><hr />
         </div>
+        <div className="col-md-12">
+          <div className="row">
+          {Requests &&
+                Requests.map((request, index) => (
+                  request.status!=="completed" && <div className="col-lg-4 col-md-6" key={index}>
+                    <RequestCard request={request} />
+                    </div>
+                    ))}
+                    
+          </div>
+        </div>
         
       </div>
     </div>
   );
+}
+
+const RequestCard = ({request}) => {
+    const [distance, setDistance] = React.useState(0);
+  const userLocation = localStorage.getItem("location");
+  
+    React.useEffect(() => {
+      const eventLocation = request.location.split(",")[1];
+      axios
+        .get(
+          `https://api.openweathermap.org/geo/1.0/direct?q=${eventLocation},NP&limit=5&appid=375afe81850264034eab137ce949e9b6`
+        )
+        .then((res) => {
+           if(res.data.length>0){
+          const eLocation = `${res.data[0].lon},${res.data[0].lat}`;
+          setDistance(calculateDistance(userLocation, eLocation));
+           }
+        });
+    }, []);
+
+    return(
+        <div className="border p-2 requestCard mt-3" style={{minHeight:"150px"}}>
+           <p className="distance__v2">{distance}KM Away</p> 
+        <span>Blood Group: {request.blood_group}</span>
+        <span>Location : {request.location}</span>
+        <span>Date : {new Date(request.createdAt).toDateString()}</span>
+        <hr/>
+        <div className="d-flex justify-content-between align-items-center">
+            <Avatar />
+           <span className="flex-fill ml-2">{request.userid.username}</span> 
+            <span className="text-small">{request.userid.status!=="online" ? "❌ Away" : "🔴 Active"  }</span>
+            <span>{request.userid.status=="online" && <Link to={`/chat/${request.userid._id}`} className="mx-2 text-danger">
+           
+                <i className="fa fa-comment"></i>
+            </Link>  }</span>
+            </div>
+       </div>
+    )
+
+
 }
 
 export default Donate;
