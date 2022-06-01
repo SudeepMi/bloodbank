@@ -4,7 +4,7 @@ import TextContainer from './TextContainer';
 import Messages from './Messages';
 import InfoBar from './InfoBar';
 import Input from './Input';
-import http from "../../utils/http";
+import http, {host} from "../../utils/http";
 import './Chat.css';
 import {  useParams } from 'react-router-dom';
 import User from "../../utils/User";
@@ -22,7 +22,7 @@ const Chat = () => {
   const ENDPOINT = http.host;
 
   useEffect(() => {
-   socket = io("ws://localhost:3035",{
+   socket = io(host,{
       path: '/socket'
    }); 
     socket.emit('join', { "name": name, "room": room }, (error) => {
