@@ -11,8 +11,8 @@ function AboutDonation({events}) {
   // const enrolled = events.filter(event => event.enrolled.includes(user._id))
 
   return (
-    <div className='container events__section'>
-      <h2>Blood Dontaion Events</h2>
+    <div className='container events__section mt-3'>
+      <h2>Blood Donation Events</h2>
       <div className='row'>
       {events.map((event,key) => (
         <EventCard event={event} key={key} />

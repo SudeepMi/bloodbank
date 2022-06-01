@@ -25,7 +25,7 @@ function Home() {
   return (
     <div>
       <Heroslider />
-     { !loading ? <AboutDonation events={events} /> : "Loading......."}
+     { !loading ? <AboutDonation events={events} /> : <p className='p-2 text-center'>"Loading......."</p>}
      { error ? <p>{error}</p> : ""}
       <div className='container'>
       <DonationCentres />
