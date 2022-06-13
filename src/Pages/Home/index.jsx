@@ -1,17 +1,16 @@
-import React from 'react'
-import AboutDonation from '../../components/AboutDonation'
-import DonationCentres from '../../components/AboutDonation/DonationCentres'
-import Heroslider from '../../components/Heroslider/Heroslider'
-import Loading from '../../components/Loading'
-import Api from '../../utils/Api'
-import User from '../../utils/User'
+import React from "react";
+import AboutDonation from "../../components/AboutDonation";
+import DonationCentres from "../../components/AboutDonation/DonationCentres";
+import Heroslider from "../../components/Heroslider/Heroslider";
+import Loading from "../../components/Loading";
+import Api from "../../utils/Api";
+import User from "../../utils/User";
 
 function Home() {
-
-  const [events, setEvents] = React.useState([])
-  const [loading, setLoading] = React.useState(false)
-  const [error, setError] = React.useState('')
-  const [location, setLocation] = React.useState('')
+  const [events, setEvents] = React.useState([]);
+  const [loading, setLoading] = React.useState(false);
+  const [error, setError] = React.useState("");
+  const [location, setLocation] = React.useState("");
 
   const success = (data) => {
     var crd = data.coords;
@@ -29,17 +28,19 @@ function Home() {
   };
 
   React.useEffect(() => {
-    document.title = 'Blood Bank | Home';
+    document.title = "Blood Bank | Home";
     navigator.geolocation.getCurrentPosition(success, __error, options);
-      setLoading(true)
-      Api.get('/events?limit=8').then(res => {
-          setEvents(res.data.event)
-          setLoading(false)
-      }).catch(err => {
-          setError(err.response.data.message)
-          setLoading(false)
+    setLoading(true);
+    Api.get("/events?limit=8")
+      .then((res) => {
+        setEvents(res.data.event);
+        setLoading(false);
       })
-  }, [])
+      .catch((err) => {
+        setError(err.response.data.message);
+        setLoading(false);
+      });
+  }, []);
 
   React.useEffect(() => {
     const __location = location;
@@ -51,17 +52,22 @@ function Home() {
     }
   }, [location]);
 
-
   return (
     <div>
       <Heroslider />
-     { !loading ? <AboutDonation events={events} /> : <div className='p-2 mt-4 text-center'><Loading /></div>}
-     { error ? <p>{error}</p> : ""}
-      <div className='container'>
-      <DonationCentres />
+      {!loading ? (
+        <AboutDonation events={events} />
+      ) : (
+        <div className="p-2 mt-4 text-center">
+          <Loading />
+        </div>
+      )}
+      {error ? <p>{error}</p> : ""}
+      <div className="container">
+        <DonationCentres />
       </div>
     </div>
-  )
+  );
 }
 
-export default Home
+export default Home;

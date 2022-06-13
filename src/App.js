@@ -1,5 +1,5 @@
 import "./App.css";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   HashRouter as Router,
   Route,
@@ -31,8 +31,8 @@ import Donate from "./Pages/Donate/Donate";
 import io from "socket.io-client";
 import http from "./utils/http";
 import About from "./Pages/About";
+import Loading from "./components/Loading";
 const ENDPOINT = http.host;
-
 
 const ProtectedRoute = ({ redirectPath = "/login" }) => {
   if (!User()) {
@@ -43,13 +43,14 @@ const ProtectedRoute = ({ redirectPath = "/login" }) => {
 let socket;
 
 function App() {
+  const [Loc, setLocation] = useState("");
+  const [loading, setLoading] = useState(true);
   const {
     userConsent,
     pushNotificationSupported,
     onClickAskUserPermission,
     onClickSusbribeToPushNotification,
     onClickSendSubscriptionToPushServer,
-    loading,
   } = usePushNotifications();
 
   const isConsentGranted = userConsent === "granted";
@@ -72,49 +73,71 @@ function App() {
 
   //make user online
   useEffect(() => {
-    if(User().token){
-      Api.put(`/users/${User().user._id}`,{status:"online"})
-
+    if (User().token) {
+      Api.put(`/users/${User().user._id}`, { status: "online" });
     }
-
   }, []);
+  const success = (data) => {
+    var crd = data.coords;
+    setLocation(`${crd.longitude},${crd.latitude}`);
+    localStorage.setItem("location", `${crd.longitude},${crd.latitude}`);
+    setLoading(false);
+  };
+
+  function error(err) {
+    console.warn(`ERROR(${err.code}): ${err.message}`);
+  }
+
+  var options = {
+    enableHighAccuracy: true,
+    timeout: 5000,
+    maximumAge: 0,
+  };
 
   useEffect(() => {
-    socket = io(http.host,{
-       path: '/socket'
-    }); 
-     socket.emit('online', { userid:User().user._id }, (error) => {
-       if(error) {
-         alert(error);
-       }
-     });
-   }, [ENDPOINT, window.location.search]);
+    navigator.geolocation
+      ? navigator.geolocation.getCurrentPosition(success, error, options)
+      : console.log("geolocation not supported");
 
+    socket = io(http.host, {
+      path: "/socket",
+    });
+    if (User().user) {
+      socket.emit("online", { userid: User().user._id }, (error) => {
+        if (error) {
+          alert(error);
+        }
+      });
+    }
+  }, []);
 
   return (
     <Router>
       <Navbar />
       <ToastContainer />
-      { loading && <div className="loader">{pr}</div>}
-      <Routes>
-        <Route exact path="/" element={<Home />} />
-        <Route exact path="/about" element={<About />} />
-        <Route path="/login" element={<Login setpr={setPr} />} />
-        <Route path="/events-focus/:id" element={<EventDetail />} />
-        <Route element={<ProtectedRoute />}>
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/setprofile/" element={<SetProfile />} />
-          <Route path="/edit-profile/:id" element={<EditProfile />} />
-          <Route path="/events" element={<Events />} />
-          <Route path="/create-event" element={<CreateEvent />} />
-          <Route path="/events/:id/edit" element={<EditEvent />} />
-          <Route path="/request-blood" element={<BloodRequest />} />
-          <Route path="/chat/:id" element={<Chat />} />
-          <Route path="/location/:id" element={<Location />} />
-          <Route path="notifications" element={<Notifications />} />
-          <Route path="/donate" element={<Donate />} />
-        </Route>
-      </Routes>
+      {loading ? (
+        <Loading />
+      ) : (
+        <Routes>
+          <Route exact path="/" element={<Home />} />
+          <Route exact path="/about" element={<About />} />
+          <Route path="/login" element={<Login setpr={setPr} />} />
+          <Route path="/events-focus/:id" element={<EventDetail />} />
+          <Route element={<ProtectedRoute />}>
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/setprofile/" element={<SetProfile />} />
+            <Route path="/edit-profile/:id" element={<EditProfile />} />
+            <Route path="/events" element={<Events />} />
+            <Route path="/create-event" element={<CreateEvent />} />
+            <Route path="/events/:id/edit" element={<EditEvent />} />
+            <Route path="/request-blood" element={<BloodRequest />} />
+            <Route path="/chat/:id" element={<Chat />} />
+            <Route path="/location/:id" element={<Location />} />
+            <Route path="notifications" element={<Notifications />} />
+            <Route path="/donate" element={<Donate />} />
+          </Route>
+        </Routes>
+      )}
       <Footer />
     </Router>
   );
