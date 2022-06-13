@@ -43,3 +43,15 @@
 .w__50{
     width: 50%;
 }
+.bg-brand{
+    background: #ff416c;
+    color: #f7eded;
+}
+.bg-brand a{
+    color: #f7eded;
+    font-weight: 700;
+}
+.bg-brand a:hover{
+    color: #000000;
+    
+}

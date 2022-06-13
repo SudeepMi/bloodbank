@@ -53,7 +53,7 @@ function Sidebar({ profile, requests, notifications }) {
             <p>{user.isAdmin && "ADMIN"}</p>
           </div>
 
-          <div className="toolbar">
+          <div className="toolbar border bg-brand">
             {user.isAdmin && (
               <Link to={`/events`} className="link">
                 <UserChangeIcon className="mx__2" />
