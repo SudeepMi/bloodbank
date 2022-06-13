@@ -33,7 +33,7 @@ function Navbar() {
                 <span className="navbar-toggler-icon"></span>
             </button>
             <div className={`align-items-center justify-content-center  ${small ? '_v2' :'d-none'}`} id="navbarSupportedContent">
-            <Link className='navbar_links' to="#">ABOUT US</Link>
+            <Link className='navbar_links' to="/about">ABOUT US</Link>
             <Link className='navbar_links' to="/request-blood">REQUEST BLOOD</Link>
             <Link className='navbar_links' to="/donate">DONATE BLOOD</Link>
             { !User() ? <Link className='navbar_links btn btn_small_black' to="/login">Login</Link>

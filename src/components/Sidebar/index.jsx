@@ -113,7 +113,7 @@ function Sidebar({ profile, requests, notifications }) {
               </ul>
             </div>
             <div className="profile__content col-md-6 ">
-              <h5>Your blood request</h5>
+             {requests.length > 0 && <h5>Your blood request</h5>}
               {requests &&
                 requests.map((request, index) => (
                   <div className="card p-3 my-2" key={index}>

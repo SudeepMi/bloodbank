@@ -2,6 +2,7 @@ import React from 'react'
 import AboutDonation from '../../components/AboutDonation'
 import DonationCentres from '../../components/AboutDonation/DonationCentres'
 import Heroslider from '../../components/Heroslider/Heroslider'
+import Loading from '../../components/Loading'
 import Api from '../../utils/Api'
 import User from '../../utils/User'
 
@@ -54,7 +55,7 @@ function Home() {
   return (
     <div>
       <Heroslider />
-     { !loading ? <AboutDonation events={events} /> : <p className='p-2 text-center'>"Loading......."</p>}
+     { !loading ? <AboutDonation events={events} /> : <div className='p-2 mt-4 text-center'><Loading /></div>}
      { error ? <p>{error}</p> : ""}
       <div className='container'>
       <DonationCentres />

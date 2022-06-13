@@ -113,6 +113,7 @@ function Donate() {
 
 const RequestCard = ({request}) => {
     const [distance, setDistance] = React.useState(0);
+  const navigate = useNavigate();
   const userLocation = localStorage.getItem("location");
   
     React.useEffect(() => {
@@ -129,6 +130,23 @@ const RequestCard = ({request}) => {
         });
     }, []);
 
+    const handleClick = () => {
+      const recipent = request.userid;
+      Api.post("/chat/room", {
+        recipent,
+      })
+        .then((res) => {
+          if (res.status === 200) {
+            // console.log(res.data.room);
+            const room = res.data.room.roomname;
+            navigate(`/chat/${room}`, { state: { request } });
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+
     return(
         <div className="border p-2 requestCard mt-3" style={{minHeight:"150px"}}>
            <p className="distance__v2">{distance}KM Away</p> 
@@ -139,11 +157,20 @@ const RequestCard = ({request}) => {
         <div className="d-flex justify-content-between align-items-center">
             <Avatar />
            <span className="flex-fill ml-2">{request.userid.username}</span> 
-            <span className="text-small">{request.userid.status!=="online" ? "❌ Away" : "🔴 Active"  }</span>
-            <span>{request.userid.status=="online" && <Link to={`/chat/${request.userid._id}`} className="mx-2 text-danger">
-           
-                <i className="fa fa-comment"></i>
-            </Link>  }</span>
+            <span className="text-small">{request.userid.status!=="online" ? 
+             <span className="text-danger">
+             <i className="fa fa-circle"></i> Away
+            </span>
+             : <span className="text-success">
+             <i className="fa fa-circle"></i> ONLINE
+            </span>
+            }</span>
+            <span>{request.userid.status=="online" && <button
+                className="btn btn-sm btn-danger"
+                onClick={() => handleClick()}
+              >
+                Chat
+              </button>  }</span>
             </div>
        </div>
     )

@@ -2,12 +2,14 @@ import React, { useEffect } from "react";
 import Api from "../../utils/Api";
 import User from "../../utils/User";
 import Sidebar from "../../components/Sidebar";
+import Loading from "../../components/Loading";
 
 function Dashboard() {
   const [profile, setProfile] = React.useState({});
   const [requests, setRequests] = React.useState([]);
   const [location, setLocation] = React.useState("0,0");
   const [notifications, setNotifications] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
 
   const success = (data) => {
     var crd = data.coords;
@@ -34,8 +36,11 @@ function Dashboard() {
         .then((res) => {
           setProfile(res.data.user);
           localStorage.setItem("profile", JSON.stringify(res.data.user));
+          setLoading(false);
         })
-        .catch((err) => {});
+        .catch((err) => {
+          setLoading(false);
+        });
 
       Api.get("/requests/my")
         .then((res) => {
@@ -65,7 +70,7 @@ function Dashboard() {
       <div className="row">
         <div className="col-md-11 m-auto">
           {
-            <Sidebar
+           loading ? <Loading />  :  <Sidebar
               profile={profile}
               requests={requests}
               notifications={notifications}

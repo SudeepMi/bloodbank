@@ -28,6 +28,11 @@ import Notifications from "./Pages/Notification/Notification";
 import Footer from "./components/Footer";
 import Api from "./utils/Api";
 import Donate from "./Pages/Donate/Donate";
+import io from "socket.io-client";
+import http from "./utils/http";
+import About from "./Pages/About";
+const ENDPOINT = http.host;
+
 
 const ProtectedRoute = ({ redirectPath = "/login" }) => {
   if (!User()) {
@@ -35,6 +40,7 @@ const ProtectedRoute = ({ redirectPath = "/login" }) => {
   }
   return <Outlet />;
 };
+let socket;
 
 function App() {
   const {
@@ -68,8 +74,23 @@ function App() {
   useEffect(() => {
     if(User().token){
       Api.put(`/users/${User().user._id}`,{status:"online"})
+
     }
+
   }, []);
+
+  useEffect(() => {
+    socket = io(http.host,{
+       path: '/socket'
+    }); 
+     socket.emit('online', { userid:User().user._id }, (error) => {
+       if(error) {
+         alert(error);
+       }
+     });
+   }, [ENDPOINT, window.location.search]);
+
+
   return (
     <Router>
       <Navbar />
@@ -77,6 +98,7 @@ function App() {
       { loading && <div className="loader">{pr}</div>}
       <Routes>
         <Route exact path="/" element={<Home />} />
+        <Route exact path="/about" element={<About />} />
         <Route path="/login" element={<Login setpr={setPr} />} />
         <Route path="/events-focus/:id" element={<EventDetail />} />
         <Route element={<ProtectedRoute />}>
