@@ -39,15 +39,22 @@ function DonorProfile({ profile }) {
               away
             </p>
 
-            <div className="d-flex">
-            <span className="text-small">{profile.userid.status!=="online" ? "❌ Away" : "🔴 Active"  }</span>
-            <span>{profile.userid.status=="online" &&  <Button
-                variant="contained"
-                color="info"
+            <div className="w-100">
+            <span className="text-small d-flex align-items-center justify-content-between">{profile.userid.status!=="online" ? 
+            <span className="text-danger">
+            <i className="fa fa-circle"></i> Away
+           </span>
+            : <span className="text-success">
+            <i className="fa fa-circle"></i> ONLINE
+           </span>  }
+           <span>{profile.userid.status=="online" &&  <button
+                className="btn btn-sm btn-danger"
                 onClick={() => handleClick()}
               >
                 Chat
-              </Button> }</span>
+              </button> }</span>
+           </span>
+            
              
             </div>
           </div>
