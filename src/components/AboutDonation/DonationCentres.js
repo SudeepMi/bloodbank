@@ -153,8 +153,8 @@ function DonationCentres() {
         <li className="border p-2 rounded gradient">
           <strong>NRCS Central Blood Bank, Soalteemod, Kathmandu</strong>
 
-          <li>Every day (Sunday-Saturday), 7 AM to 7 PM</li>
-          <li>Organizer: Nepal Red Cross Society</li>
+          <p>Every day (Sunday-Saturday), 7 AM to 7 PM</p>
+          <p>Organizer: Nepal Red Cross Society</p>
           {""}
           <a
             className="btn btn-sm btn-danger mt-2"

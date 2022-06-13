@@ -18,7 +18,7 @@ function Heroslider() {
       };
 
   return (
-   <div className='slider_wrapper'>
+   <div className='slider_wrapper container'>
         <Slider {...settings}>
           <div className='slider_item'>
             <img src={Slider1} alt="slider1" width="99%" />

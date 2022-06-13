@@ -16,8 +16,8 @@ function EventCard({ event }) {
         `https://api.openweathermap.org/geo/1.0/direct?q=${eventLocation},NP&limit=5&appid=375afe81850264034eab137ce949e9b6`
       )
       .then((res) => {
-        const eLocation = `${res.data[0].lon},${res.data[0].lat}`;
-        setDistance(calculateDistance(userLocation, eLocation));
+       if(res.data[0]){ const eLocation = `${res.data[0].lon},${res.data[0].lat}`;
+        setDistance(calculateDistance(userLocation, eLocation));}
       });
   }, []);
 
@@ -35,7 +35,8 @@ function EventCard({ event }) {
   };
 
   return (
-    <div className="col-lg-3 col-md-6 col-sm-12" key={event._id} style={{minHeight:"360px"}}>
+    event.status === "upcoming" &&
+    <div className="col-lg-4 col-md-6 col-sm-12 my-3" key={event._id} style={{minHeight:"360px"}}>
       <div className="about-donation__event__header d-grid">
         <h3>
           <Link to={`/events-focus/${event._id}`}>{event.name}</Link>
@@ -44,10 +45,8 @@ function EventCard({ event }) {
     </div>
         <p className="text-muted font-italic">
           STATUS :{" "}
-          {event.status === "upcoming" ? (
+          {event.status === "upcoming" && (
             <span className="badge badge-success">{event.status}</span>
-          ) : (
-            <span className="badge badge-info">{event.status}</span>
           )}{" "}
         </p>
         
@@ -57,6 +56,7 @@ function EventCard({ event }) {
         <p>Location : {event.location}</p>
         <p>Date : {event.time}</p>
         <p>Organizer : {event.organizer}</p> */}
+        <p>{event.location}</p>
         <div className="d-flex justify-content-between">
         {user && event.status === "upcoming" && !event.enrolled.includes(user._id) && (
           <button
@@ -74,7 +74,7 @@ function EventCard({ event }) {
         </Link>
         </div>
       </div>
-    </div>
+    </div> 
   );
 }
 

@@ -40,13 +40,15 @@ function DonorProfile({ profile }) {
             </p>
 
             <div className="d-flex">
-              <Button
+            <span className="text-small">{profile.userid.status!=="online" ? "❌ Away" : "🔴 Active"  }</span>
+            <span>{profile.userid.status=="online" &&  <Button
                 variant="contained"
                 color="info"
                 onClick={() => handleClick()}
               >
                 Chat
-              </Button>
+              </Button> }</span>
+             
             </div>
           </div>
         </div>

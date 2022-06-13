@@ -12,7 +12,7 @@ function AboutDonation({events}) {
 
   return (
     <div className='container events__section mt-3'>
-      <h2>Blood Donation Events</h2>
+      <h2 className='my-2 text-danger'>Upcoming Blood Donation Events</h2>
       <div className='row'>
       {events.map((event,key) => (
         <EventCard event={event} key={key} />
