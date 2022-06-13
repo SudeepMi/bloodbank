@@ -15,6 +15,7 @@ const history = useNavigate();
     const [isSuccess, setSuccess] = useState(false);
     const [ isMobile, setMobile] = useState(false);
     const [showLogin, setShowLogin] = useState(true);
+    const [showRegister, setShowRegister] = useState(false);
 
     useEffect(() => {
         if (window.innerWidth < 768) {
@@ -110,12 +111,34 @@ const history = useNavigate();
 
   const check = () => {
     if(!isMobile) return true;
+    else return false;
+  }
+
+  const showReg= () => {
+    if(!isMobile) return true;
     else{
-        if(showLogin) return true;
-        else return false;
+        if(showLogin) return false;
+        else return true;
     }
   }
-  
+
+  const showLog= () => {
+    if(!isMobile) return true;
+    else{
+        if(showRegister) return false;
+        else return true;
+    }
+  }
+  const handleShowLogin = (e) => {
+    e.preventDefault();
+    setShowLogin(true);
+    setShowRegister(false);
+  }
+  const handleShowRegister = (e) => {
+    e.preventDefault();
+    setShowLogin(false);
+    setShowRegister(true);
+  }
   return (
     <div className="auth_wrapper">
         <ToastContainer
@@ -129,7 +152,7 @@ const history = useNavigate();
         draggable
         pauseOnHover />
       <div className={`${Classes}` + " container"} id="container">
-        { !check() && <div className={`${isMobile && "w-100 z1"} `+"form-container sign-up-container"}>
+        { (check() || showReg()) && <div className={`${isMobile && "w-100 z1"} `+"form-container sign-up-container"}>
           <form action="#">
             <h1>Create Account</h1>
             <div className="social-container">
@@ -150,12 +173,12 @@ const history = useNavigate();
             <button onClick={(e)=>HandleRegister(e)} className="authbtn">
                 {isLoading ? "Loading..." : "Sign Up"}
             </button>
-         {isMobile && <button onClick={()=>setShowLogin(true)} className="btn btn-sm mt-3 btn-warning">
+         {isMobile && <button onClick={(e)=>handleShowLogin(e)} className="btn btn-sm mt-3 btn-warning">
             Sign In
           </button>}
           </form>
         </div> }
-       { check() && <div className={`${isMobile && "w-100 z1"} `+"form-container sign-in-container"}>
+       { (check() || showLog()) && <div className={`${isMobile && "w-100 z1"} `+"form-container sign-in-container"}>
           <form action="#">
             <h1>Sign in</h1>
             <div className="social-container">
@@ -174,7 +197,7 @@ const history = useNavigate();
             <input type="password" placeholder="Password" onChange={(e)=>setPassword(e.target.value)} />
             <a href="#">Forgot your password?</a>
             <button onClick={(e)=>HandleLogin(e)} className="authbtn">Sign In</button>
-        {isMobile && <button onClick={()=>setShowLogin(false)} className="btn-sm mt-3 btn-warning">Sign Up</button>}
+        {isMobile && <button onClick={(e)=>handleShowRegister(e)} className="btn-sm mt-3 btn-warning">Sign Up</button>}
           </form>
         </div> }
         { !isMobile && <div className="overlay-container">
