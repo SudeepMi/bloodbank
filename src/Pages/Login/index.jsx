@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./style.css";
 import "../../../node_modules/font-awesome/css/font-awesome.min.css";
 import API from "../../utils/Api";
@@ -13,6 +13,19 @@ const history = useNavigate();
     const [isLoading, setLoading] = useState(false);
     const [isError, setError] = useState(false);
     const [isSuccess, setSuccess] = useState(false);
+    const [ isMobile, setMobile] = useState(false);
+    const [showLogin, setShowLogin] = useState(true);
+
+    useEffect(() => {
+        if (window.innerWidth < 768) {
+            setMobile(true);
+        }
+        else {
+            setMobile(false);
+        }
+    }, [
+        window.innerWidth
+    ]);
 
   const HandleRegister = (e) => {
     e.preventDefault();
@@ -48,9 +61,11 @@ const history = useNavigate();
             progress: undefined,
             closeButton: false,
         });
+        setLoading(false);
       })
-    }
-      const HandleLogin = (e) => {
+  }
+  
+  const HandleLogin = (e) => {
           e.preventDefault();
             setLoading(true);
             const intToast = toast.loading("Logging in")
@@ -88,9 +103,19 @@ const history = useNavigate();
                     progress: undefined,
                     closeButton: false,
                 });
+                setLoading(false);
             })
       
   }
+
+  const check = () => {
+    if(!isMobile) return true;
+    else{
+        if(showLogin) return true;
+        else return false;
+    }
+  }
+  
   return (
     <div className="auth_wrapper">
         <ToastContainer
@@ -104,7 +129,7 @@ const history = useNavigate();
         draggable
         pauseOnHover />
       <div className={`${Classes}` + " container"} id="container">
-        <div className="form-container sign-up-container">
+        { !check() && <div className={`${isMobile && "w-100 z1"} `+"form-container sign-up-container"}>
           <form action="#">
             <h1>Create Account</h1>
             <div className="social-container">
@@ -122,12 +147,15 @@ const history = useNavigate();
             <input type="text" placeholder="Name" onChange={(e)=>setUsername(e.target.value)} />
             <input type="email" placeholder="Email" onChange={(e)=>setEmail(e.target.value)} />
             <input type="password" placeholder="Password" onChange={(e)=>setPassword(e.target.value)} />
-            <button onClick={(e)=>HandleRegister(e)}>
+            <button onClick={(e)=>HandleRegister(e)} className="authbtn">
                 {isLoading ? "Loading..." : "Sign Up"}
             </button>
+         {isMobile && <button onClick={()=>setShowLogin(true)} className="btn btn-sm mt-3 btn-warning">
+            Sign In
+          </button>}
           </form>
-        </div>
-        <div className="form-container sign-in-container">
+        </div> }
+       { check() && <div className={`${isMobile && "w-100 z1"} `+"form-container sign-in-container"}>
           <form action="#">
             <h1>Sign in</h1>
             <div className="social-container">
@@ -145,10 +173,11 @@ const history = useNavigate();
             <input type="email" placeholder="Email" onChange={(e)=>setEmail(e.target.value)} />
             <input type="password" placeholder="Password" onChange={(e)=>setPassword(e.target.value)} />
             <a href="#">Forgot your password?</a>
-            <button onClick={(e)=>HandleLogin(e)}>Sign In</button>
+            <button onClick={(e)=>HandleLogin(e)} className="authbtn">Sign In</button>
+        {isMobile && <button onClick={()=>setShowLogin(false)} className="btn-sm mt-3 btn-warning">Sign Up</button>}
           </form>
-        </div>
-        <div className="overlay-container">
+        </div> }
+        { !isMobile && <div className="overlay-container">
           <div className="overlay">
             <div className="overlay-panel overlay-left">
               <h1>Welcome Back!</h1>
@@ -175,7 +204,7 @@ const history = useNavigate();
               </button>
             </div>
           </div>
-        </div>
+        </div> }
       </div>
     </div>
   );
