@@ -80,6 +80,7 @@ function App() {
   }, []);
 
   useEffect(() => {
+    if(User().user){
     socket = io(http.host,{
        path: '/socket'
     }); 
@@ -88,7 +89,8 @@ function App() {
          alert(error);
        }
      });
-   }, [ENDPOINT, window.location.search]);
+    }
+   }, []);
 
 
   return (
