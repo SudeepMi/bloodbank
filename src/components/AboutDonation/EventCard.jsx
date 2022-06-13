@@ -13,7 +13,7 @@ function EventCard({ event }) {
     const eventLocation = event.location.split(",")[1];
     axios
       .get(
-        `https://api.openweathermap.org/geo/1.0/direct?q=${eventLocation},NP&limit=5&appid=375afe81850264034eab137ce949e9b6`
+        `https://api.openweathermap.org/geo/1.0/direct?q=${eventLocation},NP&limit=5&appid=11f57469ba8b443f310f5ff160502490`
       )
       .then((res) => {
        if(res.data[0]){ const eLocation = `${res.data[0].lon},${res.data[0].lat}`;
